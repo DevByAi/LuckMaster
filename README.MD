@@ -20,7 +20,7 @@ An enhanced raffle tool designed for managing giveaways and lotteries efficientl
 5. View and copy winners or manage raffle history as needed.
 
 ## Demo
-[View the live demo](https://github.com/DevByAi/LuckMaster)
+[View the live demo](https://devbyai.github.io/LuckMaster)
 
 ## Privacy
 This tool prioritizes user privacy:
