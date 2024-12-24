@@ -61,6 +61,7 @@
             padding: 10px;
             border-radius: 5px;
             margin-bottom: 10px;
+            animation: slideIn 0.3s ease-out;
         }
         .history {
             margin-top: 20px;
@@ -120,35 +121,83 @@
             margin-right: 10px;
             width: auto !important;
         }
-        
         .copy-button:hover {
             background-color: #5a6268;
         }
-
         .copy-success {
             background-color: #28a745 !important;
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .clear-button {
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: auto;
+        }
+        .delete-button {
+            float: left;
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 20px;
+            padding: 0 5px;
+            width: auto;
+        }
+        .history-item {
+            position: relative;
+        }
+        /* אנימציית כניסה לתוצאות */
+        .result-item {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* אנימציית לחיצה על כפתור */
+        button {
+            transition: transform 0.1s;
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        .secondary-button {
+            background-color: #6c757d;
+            margin: 5px;
+            width: calc(50% - 10px);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>כלי הגרלה</h1>
-
         <div class="form-group">
             <label for="rafflePurpose">מה מטרת ההגרלה?</label>
             <input type="text" id="rafflePurpose" placeholder="הכנס את מטרת ההגרלה...">
         </div>
-
         <div class="form-group">
             <label for="participantCount">מספר משתתפים:</label>
             <input type="number" id="participantCount" placeholder="הכנס מספר משתתפים כולל...">
         </div>
-
         <div class="form-group">
             <label for="winnerCount">מספר זוכים:</label>
             <input type="number" id="winnerCount" placeholder="הכנס מספר זוכים...">
         </div>
-
         <div class="form-group">
             <label for="participantList">
                 משתתפים (שם אחד בכל שורה):
@@ -156,38 +205,35 @@
             </label>
             <textarea id="participantList" rows="5" placeholder="הכנס את שמות המשתתפים כאן..." oninput="updateParticipantCount()"></textarea>
         </div>
-
+        <div class="form-group">
+            <input type="file" id="importFile" style="display: none" accept=".csv" onchange="importCSV(this)">
+            <button onclick="document.getElementById('importFile').click()" class="secondary-button">ייבא רשימת משתתפים (CSV)</button>
+        </div>
         <button onclick="runRaffle()">הפעל הגרלה</button>
-
         <div class="results" id="results"></div>
-
         <div class="history" id="history">
             <h2>הגרלות קודמות</h2>
         </div>
     </div>
-
     <script>
         function runRaffle() {
+            if (!validateInput()) return;
             const purpose = document.getElementById('rafflePurpose').value.trim();
             const participantCount = parseInt(document.getElementById('participantCount').value);
             const winnerCount = parseInt(document.getElementById('winnerCount').value);
             const participants = document.getElementById('participantList').value.trim().split('\n').filter(name => name.trim() !== '');
-
             if (!purpose || isNaN(participantCount) || isNaN(winnerCount) || participants.length < winnerCount) {
                 alert('נא למלא את כל השדות כראוי.');
                 return;
             }
-
             const winners = [];
             const availableParticipants = [...participants];
             while (winners.length < winnerCount) {
                 const randomIndex = Math.floor(Math.random() * availableParticipants.length);
                 winners.push(availableParticipants.splice(randomIndex, 1)[0]);
             }
-
             const date = new Date();
             const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
-
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = `
                 <div class='result-item'>
@@ -195,43 +241,55 @@
                     <button onclick="copyWinners(this)" class="copy-button">העתק</button>
                     <span id="winnersList">${winners.join(', ')}</span>
                 </div>`;
-
             saveRaffle(purpose, formattedDate, winners);
         }
-
         function saveRaffle(purpose, date, winners) {
             const raffleData = JSON.parse(localStorage.getItem('raffleHistory') || '[]');
-
             const newRaffle = { purpose, date, winners };
             raffleData.push(newRaffle);
             localStorage.setItem('raffleHistory', JSON.stringify(raffleData));
-
             updateHistory();
         }
-
         function updateHistory() {
             const historyDiv = document.getElementById('history');
             const raffleData = JSON.parse(localStorage.getItem('raffleHistory') || '[]');
-
-            historyDiv.innerHTML = '<h2>הגרלות קודמות</h2>';
-            raffleData.forEach((raffle) => {
+            historyDiv.innerHTML = `
+                <div class="history-header">
+                    <h2>הגרלות קודמות</h2>
+                    <button onclick="clearHistory()" class="clear-button">נקה היסטוריה</button>
+                </div>
+            `;
+            raffleData.forEach((raffle, index) => {
                 const item = document.createElement('div');
                 item.className = 'history-item';
-                item.innerHTML = `<strong>${raffle.purpose}</strong> (${raffle.date})<br>זוכים: ${raffle.winners.join(', ')}`;
+                item.innerHTML = `
+                    <button onclick="deleteRaffle(${index})" class="delete-button">×</button>
+                    <strong>${sanitizeInput(raffle.purpose)}</strong> (${raffle.date})<br>זוכים: ${raffle.winners.map(winner => sanitizeInput(winner)).join(', ')}
+                `;
                 historyDiv.appendChild(item);
             });
         }
-
+        function deleteRaffle(index) {
+            if (confirm('האם אתה בטוח שברצונך למחוק הגרלה זו?')) {
+                const raffleData = JSON.parse(localStorage.getItem('raffleHistory') || '[]');
+                raffleData.splice(index, 1);
+                localStorage.setItem('raffleHistory', JSON.stringify(raffleData));
+                updateHistory();
+            }
+        }
+        function clearHistory() {
+            if (confirm('האם אתה בטוח שברצונך למחוק את כל ההיסטוריה?')) {
+                localStorage.removeItem('raffleHistory');
+                updateHistory();
+            }
+        }
         window.onload = updateHistory;
-
         function updateParticipantCount() {
             const participantList = document.getElementById('participantList').value.trim();
             const totalRequired = parseInt(document.getElementById('participantCount').value) || 0;
             const currentCount = participantList ? participantList.split('\n').filter(name => name.trim() !== '').length : 0;
-            
             document.getElementById('participantCounter').textContent = currentCount;
             document.getElementById('totalParticipants').textContent = totalRequired;
-            
             const counterSpan = document.getElementById('participantCounter');
             if (currentCount > totalRequired) {
                 counterSpan.style.color = 'red';
@@ -241,9 +299,7 @@
                 counterSpan.style.color = '#333';
             }
         }
-
         document.getElementById('participantCount').addEventListener('input', updateParticipantCount);
-
         const style = document.createElement('style');
         style.textContent = `
             #participantCounter, #totalParticipants {
@@ -252,13 +308,11 @@
             }
         `;
         document.head.appendChild(style);
-
         function copyWinners(button) {
             const winnersText = document.getElementById('winnersList').textContent;
             navigator.clipboard.writeText(winnersText).then(() => {
                 button.textContent = '✓ הועתק';
                 button.classList.add('copy-success');
-                
                 setTimeout(() => {
                     button.textContent = 'העתק';
                     button.classList.remove('copy-success');
@@ -266,6 +320,56 @@
             }).catch(err => {
                 alert('שגיאה בהעתקה: ' + err);
             });
+        }
+        function importCSV(input) {
+            const file = input.files[0];
+            const maxSize = 1024 * 1024; // 1MB
+            if (file) {
+                if (file.size > maxSize) {
+                    alert('הקובץ גדול מדי. גודל מקסימלי הוא 1MB');
+                    input.value = '';
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const participants = e.target.result
+                            .split(/\r?\n/)
+                            .map(line => line.trim())
+                            .filter(line => line.length > 0);
+                        document.getElementById('participantList').value = participants.join('\n');
+                        document.getElementById('participantCount').value = participants.length;
+                        updateParticipantCount();
+                        alert('רשימת המשתתפים יובאה בהצלחה!');
+                    } catch (err) {
+                        alert('שגיאה בייבוא הקובץ');
+                        console.error(err);
+                    }
+                };
+                reader.readAsText(file);
+            }
+            input.value = '';
+        }
+        function sanitizeInput(input) {
+            return input.replace(/[<>]/g, ''); // מניעת XSS בסיסית
+        }
+        function validateInput() {
+            const purpose = document.getElementById('rafflePurpose').value.trim();
+            const participantCount = parseInt(document.getElementById('participantCount').value);
+            const winnerCount = parseInt(document.getElementById('winnerCount').value);
+            if (!purpose) {
+                alert('נא להזין מטרת הגרלה');
+                return false;
+            }
+            if (winnerCount > participantCount) {
+                alert('מספר הזוכים לא יכול להיות גדול ממספר המשתתפים');
+                return false;
+            }
+            if (winnerCount <= 0 || participantCount <= 0) {
+                alert('מספר המשתתפים והזוכים חייב להיות גדול מ-0');
+                return false;
+            }
+            return true;
         }
     </script>
 </body>
