@@ -1,31 +1,35 @@
-# Raffle Tool
+# Raffle Tool - LuckMaster
 
-A simple and efficient raffle tool to create random drawings. Designed with a clean UI and responsive layout, this tool is perfect for managing giveaways, choosing winners, or running lotteries.
+An enhanced raffle tool designed for managing giveaways and lotteries efficiently. With advanced features like importing participant lists and customizable options, it ensures seamless management for any draw.
 
 ## Features
-- Input raffle purpose and participant details.
-- Specify the number of participants and winners.
-- Automatically validates inputs and ensures a smooth experience.
-- Generates random winners with a single click.
-- Maintains a history of previous raffles stored locally in the browser.
-- Copy winner names with ease using the built-in "Copy" functionality.
-- Fully responsive design for desktop and mobile devices.
-
-## Live Demo
-Check out the live demo: [Raffle Tool](https://github.com/DevByAi)
+- **Raffle Purpose**: Define the goal of the raffle.
+- **Participant and Winner Management**: Specify the number of participants and winners with input validation.
+- **Dynamic List Management**: Add participants manually or import a CSV file.
+- **Responsive Design**: Optimized for desktop and mobile devices.
+- **Winner Copy Functionality**: Copy the names of winners easily.
+- **History Management**: View, delete, or clear past raffles directly from the interface.
+- **Privacy Notice**: Ensures that participant data remains local to the user's device.
+- **Localized Interface**: Hebrew language support with RTL design.
 
 ## How to Use
 1. Enter the purpose of the raffle.
 2. Specify the total number of participants and winners.
-3. Input participant names (one per line).
-4. Click the "Run Raffle" button to generate random winners.
-5. View results and copy winner names for further use.
-6. Access previous raffles in the "History" section.
+3. Input participant names manually or import a CSV file.
+4. Click the "Run Raffle" button to randomly select winners.
+5. View and copy winners or manage raffle history as needed.
 
-## License and Usage
-You are free to use and modify this code for personal or commercial purposes. Please provide proper credit by linking to my GitHub profile:
+## Demo
+[View the live demo](https://github.com/DevByAi/LuckMaster)
+
+## Privacy
+This tool prioritizes user privacy:
+- All participant data remains on the local device and is not sent to external servers.
+
+## License and Attribution
+The project is open-source and free to use and modify for personal or commercial purposes. Please provide proper credit by linking to my GitHub profile:
 
 [DevByAi](https://github.com/DevByAi)
 
-## Contributing
-Contributions are welcome! Feel free to fork the repository, make your changes, and submit a pull request.
+## Contributions
+Contributions are welcome! Fork the repository, make your changes, and submit a pull request.
