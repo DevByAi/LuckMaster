@@ -129,14 +129,12 @@
             background-color: #5a6268;
         }
         .copy-success {
-            background-color: #28a745 !important;
-        }
+            background-color: #28a745 !important; }
         .history-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-        }
+            margin-bottom: 15px; }
         .clear-button {
             background-color: #dc3545;
             color: white;
@@ -144,8 +142,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            width: auto;
-        }
+            width: auto;}
         .delete-button {
             float: left;
             background: none;
@@ -154,14 +151,11 @@
             cursor: pointer;
             font-size: 20px;
             padding: 0 5px;
-            width: auto;
-        }
+            width: auto;}
         .history-item {
-            position: relative;
-        }
+            position: relative; }
         .result-item {
-            animation: slideIn 0.3s ease-out;
-        }
+            animation: slideIn 0.3s ease-out; }
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -271,13 +265,18 @@
             saveRaffle(purpose, formattedDate, winners); }
         function saveRaffle(purpose, date, winners) {
             const raffleData = JSON.parse(localStorage.getItem('raffleHistory') || '[]');
+            
+
+            const allParticipants = document.getElementById('participantList').value.trim().split('\n').filter(name => name.trim() !== '');
+            
             const newRaffle = {
                 purpose,
                 date,
                 winners,
-                allParticipants: document.getElementById('participantList').value.trim().split('\n').filter(name => name.trim() !== ''),
-                participantCount: parseInt(document.getElementById('participantCount').value),
-                winnerCount: parseInt(document.getElementById('winnerCount').value)   };
+                allParticipants: allParticipants,  // שמירת כל המשתתפים
+                participantCount: allParticipants.length,  // שמירת המספר האמיתי
+                winnerCount: winners.length  };
+            
             raffleData.push(newRaffle);
             localStorage.setItem('raffleHistory', JSON.stringify(raffleData));
             updateHistory();   }
@@ -375,25 +374,22 @@
                 reader.readAsText(file);}
             input.value = '';}
         function sanitizeInput(input) {
-            return input.replace(/[<>]/g, ''); // מניעת XSS בסיסית}
+            return input.replace(/[<>]/g, ''); // מניעת XSS בסיסית
+        }
         function validateInput() {
             const purpose = document.getElementById('rafflePurpose').value.trim();
             const participantCount = parseInt(document.getElementById('participantCount').value);
             const winnerCount = parseInt(document.getElementById('winnerCount').value);
             if (!purpose) {
                 alert('נא להזין מטרת הגרלה');
-                return false;
-            }
+                return false; }
             if (winnerCount > participantCount) {
                 alert('מספר הזוכים לא יכול להיות גדול ממספר המשתתפים');
-                return false;
-            }
+                return false; }
             if (winnerCount <= 0 || participantCount <= 0) {
                 alert('מספר המשתתפים והזוכים חייב להיות גדול מ-0');
-                return false;
-            }
-            return true;
-        }
+                return false; }
+            return true; }
     </script>
 </body>
 </html>
