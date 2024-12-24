@@ -12,6 +12,9 @@
             background-color: #f9f9f9;
             color: #333;
             direction: rtl;
+            max-width: 100%;
+            overflow-x: hidden;
+            padding: 0 10px;
         }
         .container {
             max-width: 600px;
@@ -21,6 +24,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             width: 90%;
+            box-sizing: border-box;
         }
         h1 {
             text-align: center;
@@ -78,11 +82,12 @@
         @media screen and (max-width: 480px) {
             body {
                 font-size: 16px;
+                padding: 0 5px;
             }
-            .container {
+            .container, .privacy-notice {
+                width: 95%;
                 margin: 10px auto;
                 padding: 15px;
-                width: 95%;
             }
             h1 {
                 font-size: 24px;
@@ -181,6 +186,27 @@
             margin: 5px;
             width: calc(50% - 10px);
         }
+        .privacy-notice {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.5;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 15px;
+            width: 90%;
+            box-sizing: border-box;
+        }
+        .privacy-notice a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .privacy-notice a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -207,13 +233,17 @@
         </div>
         <div class="form-group">
             <input type="file" id="importFile" style="display: none" accept=".csv" onchange="importCSV(this)">
-            <button onclick="document.getElementById('importFile').click()" class="secondary-button">ייבא רשימת משתתפים (CSV)  גודל מקסימלי הוא 1MB (בערך 50,000 שורות)</button>
+            <button onclick="document.getElementById('importFile').click()" class="secondary-button">ייבא רשימת משתתפים (CSV)</button>
         </div>
         <button onclick="runRaffle()">הפעל הגרלה</button>
         <div class="results" id="results"></div>
         <div class="history" id="history">
             <h2>הגרלות קודמות</h2>
         </div>
+    </div>
+    <div class="privacy-notice">
+        <p>🔒 <strong>אבטחת מידע:</strong> השמות שמוקלדים או מיובאים דרך קובץ CSV אינם נשמרים בשום צורה - מלבד על המכשיר שאתה משתמש בו כרגע.</p>
+        <p>💻 <strong>קוד פתוח:</strong> הקוד של האתר זמין לצפייה ב-GitHub: <a href="https://github.com/DevByAi/LuckMaster" target="_blank">צפה בקוד המקור</a></p>
     </div>
     <script>
         function runRaffle() {
@@ -318,9 +348,7 @@
                     button.classList.remove('copy-success');
                 }, 2000);
             }).catch(err => {
-                alert('שגיאה בהעתקה: ' + err);
-            });
-        }
+                alert('שגיאה בהעתקה: ' + err);}); }
         function importCSV(input) {
             const file = input.files[0];
             const maxSize = 1024 * 1024; // 1MB
@@ -328,11 +356,9 @@
                 if (file.size > maxSize) {
                     alert('הקובץ גדול מדי. גודל מקסימלי הוא 1MB (בערך 50,000 שורות)');
                     input.value = '';
-                    return;
-                }
+                    return;}
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
+                reader.onload = function(e) { try {
                         const participants = e.target.result
                             .split(/\r?\n/)
                             .map(line => line.trim())
@@ -343,11 +369,8 @@
                         alert('רשימת המשתתפים יובאה בהצלחה!');
                     } catch (err) {
                         alert('שגיאה בייבוא הקובץ');
-                        console.error(err);
-                    }
-                };
-                reader.readAsText(file);
-            }
+                        console.error(err); }};
+                reader.readAsText(file);}
             input.value = '';
         }
         function sanitizeInput(input) {
