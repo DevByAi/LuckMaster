@@ -8,13 +8,12 @@
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 0 10px;
             background-color: #f9f9f9;
             color: #333;
             direction: rtl;
             max-width: 100%;
-            overflow-x: hidden;
-            padding: 0 10px;   }
+            overflow-x: hidden;}
         .container {
             max-width: 600px;
             margin: 20px auto;
@@ -60,41 +59,36 @@
         .history {
             margin-top: 20px; }
         .history h2 {
-            margin-bottom: 10px;
-        }
+            margin-bottom: 10px; }
         .history-item {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             background: #f1f1f1;
             padding: 10px;
             border-radius: 5px;
-            margin-bottom: 10px;
-        }
+            margin-bottom: 10px;}
         @media screen and (max-width: 480px) {
             body {
                 font-size: 16px;
-                padding: 0 5px;
-            }
+                padding: 0 5px;}
             .container, .privacy-notice {
                 width: 95%;
                 margin: 10px auto;
-                padding: 15px;
-            }
+                padding: 15px;}
             h1 {
                 font-size: 24px;
-                margin-bottom: 15px;
-            }
+                margin-bottom: 15px; }
             .form-group {
-                margin-bottom: 12px;
-            }
+                margin-bottom: 12px;}
             button {
                 padding: 15px;
                 font-size: 18px;
-                margin: 10px 0;
-            }
+                margin: 10px 0;}
             .result-item, .history-item {
                 padding: 12px;
-                font-size: 15px;
-            }
-        }
+                font-size: 15px;} }
         @media screen and (min-width: 481px) and (max-width: 768px) {
             .container {
                 width: 92%;
@@ -142,8 +136,6 @@
             font-size: 20px;
             padding: 0 5px;
             width: auto;}
-        .history-item {
-            position: relative; }
         .result-item {
             animation: slideIn 0.3s ease-out; }
         @keyframes slideIn {
@@ -226,9 +218,33 @@
             <h2>הגרלות קודמות</h2>
         </div>  </div>
     <div class="privacy-notice">
-        <p>🔒 <strong>אבטחת מידע:</strong> השמות שמוקלדים או מיובאים דרך קובץ CSV אינם נשמרים בשום צורה - מלבד על המכשיר שאתה משתמש בו כרגע.</p>
+        <p>🔒 <strong>אבטחת מידע:</strong> השמות שמוקלדים או מיובאים דרך קובץ CSV אינם נשמרים בשום צורה - מלבד על המכשיר שאתה משתמש ו כרגע.</p>
         <p>💻 <strong>קוד פתוח:</strong> הקוד של האתר זמין לצפייה ב-GitHub: <a href="https://github.com/DevByAi/LuckMaster" target="_blank">צפה בקוד המקור</a></p> </div>
     <script>
+        window.onload = function() {
+            cleanOldData();
+            updateHistory();
+        };
+        function cleanOldData() {
+            const raffleData = JSON.parse(localStorage.getItem('raffleHistory') || '[]');
+            let needsUpdate = false;
+            raffleData.forEach((raffle, index) => {
+                if (!raffle.allParticipants || !raffle.participantCount) {
+                    raffleData[index] = {
+                        purpose: raffle.purpose,
+                        date: raffle.date,
+                        winners: raffle.winners,
+                        allParticipants: raffle.winners,
+                        participantCount: raffle.winners.length,
+                        winnerCount: raffle.winners.length
+                    };
+                    needsUpdate = true;
+                }
+            });
+            if (needsUpdate) {
+                localStorage.setItem('raffleHistory', JSON.stringify(raffleData));
+            }
+        }
         function runRaffle() {
             if (!validateInput()) return;
             const purpose = document.getElementById('rafflePurpose').value.trim();
@@ -255,21 +271,19 @@
             saveRaffle(purpose, formattedDate, winners); }
         function saveRaffle(purpose, date, winners) {
             const raffleData = JSON.parse(localStorage.getItem('raffleHistory') || '[]');
-            
-
             const allParticipants = document.getElementById('participantList').value.trim().split('\n').filter(name => name.trim() !== '');
-            
             const newRaffle = {
                 purpose,
                 date,
                 winners,
-                allParticipants: allParticipants,  // שמירת כל המשתתפים
-                participantCount: allParticipants.length,  // שמירת המספר האמיתי
-                winnerCount: winners.length  };
-            
+                allParticipants,
+                participantCount: allParticipants.length,
+                winnerCount: winners.length
+            };
             raffleData.push(newRaffle);
             localStorage.setItem('raffleHistory', JSON.stringify(raffleData));
-            updateHistory();   }
+            updateHistory();
+        }
         function updateHistory() {
             const historyDiv = document.getElementById('history');
             const raffleData = JSON.parse(localStorage.getItem('raffleHistory') || '[]');
@@ -302,27 +316,15 @@
         function reloadRaffle(index) {
             const raffleData = JSON.parse(localStorage.getItem('raffleHistory') || '[]');
             const raffle = raffleData[index];
-            
-            if (raffle) {
-                // טעינת מטרת ההגרלה
-                document.getElementById('rafflePurpose').value = raffle.purpose || '';
-                
-                // בדיקה אם יש רשימת משתתפים מלאה, אחרת משתמשים ברשימת הזוכים
-                const participants = raffle.allParticipants || raffle.winners || [];
-                document.getElementById('participantList').value = participants.join('\n');
-                
-                // טעינת המספרים - אם אין מספרים מקוריים, משתמשים באורך הרשימה
-                document.getElementById('participantCount').value = raffle.participantCount || participants.length;
-                document.getElementById('winnerCount').value = raffle.winnerCount || (raffle.winners ? raffle.winners.length : 1);
-                
-                // עדכון המונה
+            if (raffle && raffle.allParticipants) {
+                document.getElementById('rafflePurpose').value = raffle.purpose;
+                document.getElementById('participantList').value = raffle.allParticipants.join('\n');
+                document.getElementById('participantCount').value = raffle.participantCount;
+                document.getElementById('winnerCount').value = raffle.winnerCount;
                 updateParticipantCount();
-                
-                // גלילה חזרה למעלה
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
-        window.onload = updateHistory;
         function updateParticipantCount() {
             const participantList = document.getElementById('participantList').value.trim();
             const totalRequired = parseInt(document.getElementById('participantCount').value) || 0;
@@ -356,28 +358,32 @@
                 alert('שגיאה בהעתקה: ' + err); }); }
         function importCSV(input) {
             const file = input.files[0];
-            const maxSize = 1024 * 1024; // 1MB
+            const maxSize = 1024 * 1024;
             if (file) {
                 if (file.size > maxSize) {
                     alert('הקובץ גדול מדי. גודל מקסימלי הוא 1MB (בערך 50,000 שורות)');
-                    input.value = ''; return; }
+                    input.value = '';
+                    return;
+                }
                 const reader = new FileReader();
-                reader.onload = function(e) { try {
-                        const participants = e.target.result
-                            .split(/\r?\n/)
-                            .map(line => line.trim())
-                            .filter(line => line.length > 0);
+                reader.onload = function(e) {
+                    try {
+                        const participants = e.target.result.split(/\r?\n/).map(line => line.trim()).filter(line => line.length > 0);
                         document.getElementById('participantList').value = participants.join('\n');
                         document.getElementById('participantCount').value = participants.length;
                         updateParticipantCount();
                         alert('רשימת המשתתפים יובאה בהצלחה!');
                     } catch (err) {
                         alert('שגיאה בייבוא הקובץ');
-                        console.error(err);}};
-                reader.readAsText(file);}
-            input.value = '';}
+                        console.error(err);
+                    }
+                };
+                reader.readAsText(file);
+            }
+            input.value = '';
+        }
         function sanitizeInput(input) {
-            return input.replace(/[<>]/g, ''); // מניעת XSS בסיסית
+            return input.replace(/[<>]/g, '');
         }
         function validateInput() {
             const purpose = document.getElementById('rafflePurpose').value.trim();
@@ -390,7 +396,7 @@
                 alert('מספר הזוכים לא יכול להיות גדול ממספר המשתתפים');
                 return false; }
             if (winnerCount <= 0 || participantCount <= 0) {
-                alert('מספר המשתתפים ��הזוכים חייב להיות גדול מ-0');
+                alert('מספר המשתתפים והזוכים חייב להיות גדול מ-0');
                 return false; }
             return true; }
     </script>
