@@ -1,0 +1,245 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0 10px;
+    background-color: #f9f9f9;
+    color: #333;
+    direction: rtl;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    color: #007BFF;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-align: right;
+}
+
+input, textarea, button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.1s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.results {
+    margin-top: 20px;
+}
+
+.result-item {
+    background: #e9ecef;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.history {
+    margin-top: 20px;
+}
+
+.history h2 {
+    margin-bottom: 10px;
+}
+
+.history-item {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.copy-button {
+    background-color: #6c757d;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 10px;
+    width: auto !important;
+}
+
+.copy-button:hover {
+    background-color: #5a6268;
+}
+
+.copy-success {
+    background-color: #28a745 !important;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.clear-button {
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: auto;
+}
+
+.delete-button {
+    float: left;
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0 5px;
+    width: auto;
+}
+
+.privacy-notice {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 20px auto;
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 600px;
+    width: 90%;
+    box-sizing: border-box;
+}
+
+.privacy-notice a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.privacy-notice a:hover {
+    text-decoration: underline;
+}
+
+.history-actions {
+    float: left;
+    display: flex;
+    gap: 5px;
+}
+
+.reload-button {
+    background: none;
+    border: none;
+    color: #28a745;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0 5px;
+    width: auto !important;
+    transition: transform 0.2s;
+}
+
+.reload-button:hover {
+    transform: rotate(180deg);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        font-size: 16px;
+        padding: 0 5px;
+    }
+    
+    .container, .privacy-notice {
+        width: 95%;
+        margin: 10px auto;
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+    
+    .form-group {
+        margin-bottom: 12px;
+    }
+    
+    button {
+        padding: 15px;
+        font-size: 18px;
+        margin: 10px 0;
+    }
+    
+    .result-item, .history-item {
+        padding: 12px;
+        font-size: 15px;
+    }
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .container {
+        width: 92%;
+        padding: 18px;
+    }
+    
+    button {
+        padding: 14px;
+    }
+}
+
+#participantCounter, #totalParticipants {
+    font-weight: bold;
+    margin: 0 3px;
+} 
