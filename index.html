@@ -4,401 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>כלי הגרלה</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            padding: 0 10px;
-            background-color: #f9f9f9;
-            color: #333;
-            direction: rtl;
-            max-width: 100%;
-            overflow-x: hidden;}
-        .container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            box-sizing: border-box; }
-        h1 {
-            text-align: center;
-            color: #007BFF;}
-        .form-group {
-            margin-bottom: 15px;}
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            text-align: right; }
-        input, textarea, button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px; }
-        button {
-            background-color: #007BFF;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            border: none; }
-        button:hover {
-            background-color: #0056b3;}
-        .results {
-            margin-top: 20px; }
-        .result-item {
-            background: #e9ecef;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            animation: slideIn 0.3s ease-out; }
-        .history {
-            margin-top: 20px; }
-        .history h2 {
-            margin-bottom: 10px; }
-        .history-item {
-            position: relative;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            background: #f1f1f1;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;}
-        @media screen and (max-width: 480px) {
-            body {
-                font-size: 16px;
-                padding: 0 5px;}
-            .container, .privacy-notice {
-                width: 95%;
-                margin: 10px auto;
-                padding: 15px;}
-            h1 {
-                font-size: 24px;
-                margin-bottom: 15px; }
-            .form-group {
-                margin-bottom: 12px;}
-            button {
-                padding: 15px;
-                font-size: 18px;
-                margin: 10px 0;}
-            .result-item, .history-item {
-                padding: 12px;
-                font-size: 15px;} }
-        @media screen and (min-width: 481px) and (max-width: 768px) {
-            .container {
-                width: 92%;
-                padding: 18px;
-            }
-            button {
-                padding: 14px;
-            }
-        }
-        .copy-button {
-            background-color: #6c757d;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-right: 10px;
-            width: auto !important;
-        }
-        .copy-button:hover {
-            background-color: #5a6268;
-        }
-        .copy-success {
-            background-color: #28a745 !important; }
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px; }
-        .clear-button {
-            background-color: #dc3545;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: auto;}
-        .delete-button {
-            float: left;
-            background: none;
-            border: none;
-            color: #dc3545;
-            cursor: pointer;
-            font-size: 20px;
-            padding: 0 5px;
-            width: auto;}
-        .result-item {
-            animation: slideIn 0.3s ease-out; }
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px); }
-            to {
-                opacity: 1;
-                transform: translateY(0);   }   }
-        button {
-            transition: transform 0.1s;  }
-        button:active {
-            transform: scale(0.95);  }
-        .secondary-button {
-            background-color: #6c757d;
-            margin: 5px;
-            width: calc(50% - 10px);  }
-        .privacy-notice {
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            padding: 15px;
-            margin: 20px 0;
-            font-size: 14px;
-            line-height: 1.5;
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 15px;
-            width: 90%;
-            box-sizing: border-box;  }
-        .privacy-notice a {
-            color: #007bff;
-            text-decoration: none;   }
-        .privacy-notice a:hover {
-            text-decoration: underline;   }
-        .history-actions {
-            float: left;
-            display: flex;
-            gap: 5px;  }
-        .reload-button {
-            background: none;
-            border: none;
-            color: #28a745;
-            cursor: pointer;
-            font-size: 20px;
-            padding: 0 5px;
-            width: auto !important;
-            transition: transform 0.2s;   }
-        .reload-button:hover {
-            transform: rotate(180deg); }
-        .history-item {
-            position: relative;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;  }
-    </style>
-</head><body>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
     <div class="container">
         <h1>כלי הגרלה</h1>
         <div class="form-group">
             <label for="rafflePurpose">מה מטרת ההגרלה?</label>
-            <input type="text" id="rafflePurpose" placeholder="הכנס את מטרת ההגרלה...">  </div>
+            <input type="text" id="rafflePurpose" placeholder="הכנס את מטרת ההגרלה...">
+        </div>
         <div class="form-group">
             <label for="participantCount">מספר משתתפים:</label>
-            <input type="number" id="participantCount" placeholder="הכנס מספר משתתפים כולל...">    </div>
+            <input type="number" id="participantCount" placeholder="הכנס מספר משתתפים כולל...">
+        </div>
         <div class="form-group">
             <label for="winnerCount">מספר זוכים:</label>
-            <input type="number" id="winnerCount" placeholder="הכנס מספר זוכים...">  </div>
+            <input type="number" id="winnerCount" placeholder="הכנס מספר זוכים...">
+        </div>
         <div class="form-group">
             <label for="participantList">
                 משתתפים (שם אחד בכל שורה):
-                <span id="participantCounter">0</span> מתוך <span id="totalParticipants">0</span>  </label>
-            <textarea id="participantList" rows="5" placeholder="הכנס את שמות המשתתפים כאן..." oninput="updateParticipantCount()"></textarea>   </div>
+                <span id="participantCounter">0</span> מתוך <span id="totalParticipants">0</span>
+            </label>
+            <textarea id="participantList" rows="5" placeholder="הכנס את שמות המשתתפים כאן..." oninput="updateParticipantCount()"></textarea>
+        </div>
         <div class="form-group">
             <input type="file" id="importFile" style="display: none" accept=".csv" onchange="importCSV(this)">
-            <button onclick="document.getElementById('importFile').click()" class="secondary-button">ייבא רשימת משתתפים (CSV)</button>  </div>
+            <button onclick="document.getElementById('importFile').click()" class="secondary-button">ייבא רשימת משתתפים (CSV)</button>
+        </div>
         <button onclick="runRaffle()">הפעל הגרלה</button>
         <div class="results" id="results"></div>
         <div class="history" id="history">
             <h2>הגרלות קודמות</h2>
-        </div>  </div>
+        </div>
+    </div>
     <div class="privacy-notice">
-        <p>🔒 <strong>אבטחת מידע:</strong> השמות שמוקלדים או מיובאים דרך קובץ CSV אינם נשמרים בשום צורה - מלבד על המכשיר שאתה משתמש ו כרגע.</p>
-        <p>💻 <strong>קוד פתוח:</strong> הקוד של האתר זמין לצפייה ב-GitHub: <a href="https://github.com/DevByAi/LuckMaster" target="_blank">צפה בקוד המקור</a></p> </div>
-    <script>
-        window.onload = function() {
-            cleanOldData();
-            updateHistory();
-        };
-        function cleanOldData() {
-            const raffleData = JSON.parse(localStorage.getItem('raffleHistory') || '[]');
-            let needsUpdate = false;
-            raffleData.forEach((raffle, index) => {
-                if (!raffle.allParticipants || !raffle.participantCount) {
-                    raffleData[index] = {
-                        purpose: raffle.purpose,
-                        date: raffle.date,
-                        winners: raffle.winners,
-                        allParticipants: raffle.winners,
-                        participantCount: raffle.winners.length,
-                        winnerCount: raffle.winners.length
-                    };
-                    needsUpdate = true;
-                }
-            });
-            if (needsUpdate) {
-                localStorage.setItem('raffleHistory', JSON.stringify(raffleData));
-            }
-        }
-        function runRaffle() {
-            if (!validateInput()) return;
-            const purpose = document.getElementById('rafflePurpose').value.trim();
-            const participantCount = parseInt(document.getElementById('participantCount').value);
-            const winnerCount = parseInt(document.getElementById('winnerCount').value);
-            const participants = document.getElementById('participantList').value.trim().split('\n').filter(name => name.trim() !== '');
-            if (!purpose || isNaN(participantCount) || isNaN(winnerCount) || participants.length < winnerCount) {
-                alert('נא למלא את כל השדות כראוי.');
-                return;    }
-            const winners = [];
-            const availableParticipants = [...participants];
-            while (winners.length < winnerCount) {
-                const randomIndex = Math.floor(Math.random() * availableParticipants.length);
-                winners.push(availableParticipants.splice(randomIndex, 1)[0]);    }
-            const date = new Date();
-            const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = `
-                <div class='result-item'>
-                    <strong>הזוכים:</strong> 
-                    <button onclick="copyWinners(this)" class="copy-button">העתק</button>
-                    <span id="winnersList">${winners.join(', ')}</span>
-                </div>`;
-            saveRaffle(purpose, formattedDate, winners); }
-        function saveRaffle(purpose, date, winners) {
-            const raffleData = JSON.parse(localStorage.getItem('raffleHistory') || '[]');
-            const allParticipants = document.getElementById('participantList').value.trim().split('\n').filter(name => name.trim() !== '');
-            const newRaffle = {
-                purpose,
-                date,
-                winners,
-                allParticipants,
-                participantCount: allParticipants.length,
-                winnerCount: winners.length
-            };
-            raffleData.push(newRaffle);
-            localStorage.setItem('raffleHistory', JSON.stringify(raffleData));
-            updateHistory();
-        }
-        function updateHistory() {
-            const historyDiv = document.getElementById('history');
-            const raffleData = JSON.parse(localStorage.getItem('raffleHistory') || '[]');
-            historyDiv.innerHTML = `
-                <div class="history-header">
-                    <h2>הגרלות קודמות</h2>
-                    <button onclick="clearHistory()" class="clear-button">נקה היסטוריה</button>
-                </div>  `;
-            raffleData.forEach((raffle, index) => {
-                const item = document.createElement('div');
-                item.className = 'history-item';
-                item.innerHTML = `
-                    <div class="history-actions">
-                        <button onclick="deleteRaffle(${index})" class="delete-button">×</button>
-                        <button onclick="reloadRaffle(${index})" class="reload-button" title="טען נתונים מהגרלה זו">&#8635;</button>
-                    </div>
-                    <strong>${sanitizeInput(raffle.purpose)}</strong> (${raffle.date})<br>
-                    זוכים: ${raffle.winners.map(winner => sanitizeInput(winner)).join(', ')}   `;
-                historyDiv.appendChild(item);  }); }
-        function deleteRaffle(index) {
-            if (confirm('האם אתה בטוח שברצונך למחוק הגרלה זו?')) {
-                const raffleData = JSON.parse(localStorage.getItem('raffleHistory') || '[]');
-                raffleData.splice(index, 1);
-                localStorage.setItem('raffleHistory', JSON.stringify(raffleData));
-                updateHistory();     }  }
-        function clearHistory() {
-            if (confirm('האם אתה בטוח שברצונך למחוק את כל ההיסטוריה?')) {
-                localStorage.removeItem('raffleHistory');
-                updateHistory();  }}
-        function reloadRaffle(index) {
-            const raffleData = JSON.parse(localStorage.getItem('raffleHistory') || '[]');
-            const raffle = raffleData[index];
-            if (raffle && raffle.allParticipants) {
-                document.getElementById('rafflePurpose').value = raffle.purpose;
-                document.getElementById('participantList').value = raffle.allParticipants.join('\n');
-                document.getElementById('participantCount').value = raffle.participantCount;
-                document.getElementById('winnerCount').value = raffle.winnerCount;
-                updateParticipantCount();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-        function updateParticipantCount() {
-            const participantList = document.getElementById('participantList').value.trim();
-            const totalRequired = parseInt(document.getElementById('participantCount').value) || 0;
-            const currentCount = participantList ? participantList.split('\n').filter(name => name.trim() !== '').length : 0;
-            document.getElementById('participantCounter').textContent = currentCount;
-            document.getElementById('totalParticipants').textContent = totalRequired;
-            const counterSpan = document.getElementById('participantCounter');
-            if (currentCount > totalRequired) {
-                counterSpan.style.color = 'red';
-            } else if (currentCount === totalRequired) {
-                counterSpan.style.color = 'green';
-            } else {
-                counterSpan.style.color = '#333';  }  }
-        document.getElementById('participantCount').addEventListener('input', updateParticipantCount);
-        const style = document.createElement('style');
-        style.textContent = `
-            #participantCounter, #totalParticipants {
-                font-weight: bold;
-                margin: 0 3px;   }  `;
-        document.head.appendChild(style);
-        function copyWinners(button) {
-            const winnersText = document.getElementById('winnersList').textContent;
-            navigator.clipboard.writeText(winnersText).then(() => {
-                button.textContent = '✓ הועתק';
-                button.classList.add('copy-success');
-                setTimeout(() => {
-                    button.textContent = 'העתק';
-                    button.classList.remove('copy-success');
-                }, 2000);
-            }).catch(err => {
-                alert('שגיאה בהעתקה: ' + err); }); }
-        function importCSV(input) {
-            const file = input.files[0];
-            const maxSize = 1024 * 1024;
-            if (file) {
-                if (file.size > maxSize) {
-                    alert('הקובץ גדול מדי. גודל מקסימלי הוא 1MB (בערך 50,000 שורות)');
-                    input.value = '';
-                    return;
-                }
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const participants = e.target.result.split(/\r?\n/).map(line => line.trim()).filter(line => line.length > 0);
-                        document.getElementById('participantList').value = participants.join('\n');
-                        document.getElementById('participantCount').value = participants.length;
-                        updateParticipantCount();
-                        alert('רשימת המשתתפים יובאה בהצלחה!');
-                    } catch (err) {
-                        alert('שגיאה בייבוא הקובץ');
-                        console.error(err);
-                    }
-                };
-                reader.readAsText(file);
-            }
-            input.value = '';
-        }
-        function sanitizeInput(input) {
-            return input.replace(/[<>]/g, '');
-        }
-        function validateInput() {
-            const purpose = document.getElementById('rafflePurpose').value.trim();
-            const participantCount = parseInt(document.getElementById('participantCount').value);
-            const winnerCount = parseInt(document.getElementById('winnerCount').value);
-            if (!purpose) {
-                alert('נא להזין מטרת הגרלה');
-                return false; }
-            if (winnerCount > participantCount) {
-                alert('מספר הזוכים לא יכול להיות גדול ממספר המשתתפים');
-                return false; }
-            if (winnerCount <= 0 || participantCount <= 0) {
-                alert('מספר המשתתפים והזוכים חייב להיות גדול מ-0');
-                return false; }
-            return true; }
-    </script>
+        <p>🔒 <strong>אבטחת מידע:</strong> השמות שמוקלדים או מיובאים דרך קובץ CSV אינם נשמרים בשום צורה - מלבד על המכשיר שאתה משתמש בו כרגע.</p>
+        <p>💻 <strong>קוד פתוח:</strong> הקוד של האתר זמין לצפייה ב-GitHub: <a href="https://github.com/DevByAi/LuckMaster" target="_blank">צפה בקוד המקור</a></p>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
